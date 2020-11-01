@@ -1,5 +1,5 @@
 const brow = require('./lib/brow');
-
+const randomUseragent = require('random-useragent');
 let page = null
 let btn_position = null
 let times = 3 // 执行重新滑动的次数
@@ -155,6 +155,9 @@ async function fuckRobotVerify() {
 async function run() {
     const b = await brow.browser();
     page = await b.newPage();
+    // await page.setUserAgent(randomUseragent.getRandom(function (ua) {
+    //     return ua.toString().indexOf('Mobile') === -1;
+    // }));
 
     await page.goto('https://www.ebay.com/');
 
