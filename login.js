@@ -3,7 +3,7 @@ const randomUseragent = require('random-useragent');
 let page = null
 let btn_position = null
 let times = 3 // 执行重新滑动的次数
-const distanceError = [-5, -2, 3, 5] // 距离误差
+const distanceError = [-1, -2, 1, 2] // 距离误差
 
 let timeout = function (delay) {
     return new Promise((resolve, reject) => {
@@ -49,12 +49,11 @@ async function calculateDistance() {
                 }
             }
             // 返回像素差最大值跟最小值，经过调试最小值往左小7像素，最大值往左54像素
-            return {min: res[0] - 7, max: res[res.length - 1] - 54}
+            return {min: res[0] - 5, max: res[res.length - 1] - 50}
         }
 
         return compare(document)
     })
-    console.log(distance);
     return distance;
 }
 
@@ -81,16 +80,16 @@ async function getBtnPosition() {
  * */
 async function tryValidation(distance) {
     //将距离拆分成两段，模拟正常人的行为
-    const distance1 = distance - 10
+    const distance1 = distance - 10;
     const distance2 = 10
 
-    page.mouse.click(btn_position.btn_left, btn_position.btn_top, {delay: 2000})
+    page.mouse.click(btn_position.btn_left, btn_position.btn_top, {delay: 3000})
     page.mouse.down(btn_position.btn_left, btn_position.btn_top)
-    page.mouse.move(btn_position.btn_left + distance1, btn_position.btn_top, {steps: 30})
-    await timeout(800);
-    page.mouse.move(btn_position.btn_left + distance1 + distance2, btn_position.btn_top, {steps: 20})
-    await timeout(800);
-    page.mouse.up()
+    page.mouse.move(btn_position.btn_left + distance1, btn_position.btn_top, {steps: 500})
+    // await timeout(500);
+    page.mouse.move(btn_position.btn_left + distance1 + distance2, btn_position.btn_top, {steps: 300})
+    await timeout(200);
+    await page.mouse.up()
     await timeout(4000);
 
     // 判断是否验证成功
@@ -111,7 +110,9 @@ async function tryValidation(distance) {
  * @param distance 滑动距离
  * */
 async function drag(distance) {
+    await timeout(2000);
     distance = distance || await calculateDistance();
+    console.log(distance);
     const result = await tryValidation(distance.min)
     if (result.isSuccess) {
         await timeout(1000);
@@ -172,7 +173,7 @@ async function run() {
         await fuckRobotVerify();
     }
 
-    await page.waitForTimeout(1000);
+    // await page.waitForTimeout(1000);
     await (await page.$('#userid')).type('ybkk1027@gmail.com');
 
     await page.waitForTimeout(1000);
