@@ -1,0 +1,17 @@
+{
+  "name": "goodims_robot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "proxy-chain": "^0.4.5",
+    "puppeteer": "^5.4.1"
+  }
+}
